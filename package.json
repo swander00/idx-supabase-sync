@@ -1,0 +1,19 @@
+{
+  "name": "idx-supabase-sync",
+  "version": "1.0.0",
+  "description": "Sync IDX listings to Supabase",
+  "type": "module",
+  "main": "incremental-sync.js",
+  "scripts": {
+    "start": "node incremental-sync.js",
+    "sync": "node incremental-sync.js",
+    "backfill": "FULL_BACKFILL=true node incremental-sync.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.0.0",
+    "dotenv": "^16.0.0",
+    "node-fetch": "^3.0.0"
+  }
+}
