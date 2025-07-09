@@ -1,3 +1,11 @@
+import fetch, { Headers, Request, Response } from 'node-fetch'
+
+// Polyfill browser globals for Supabase’s fetch-based client
+globalThis.fetch   = fetch
+globalThis.Headers = Headers
+globalThis.Request = Request
+globalThis.Response = Response
+
 // incremental-sync.js
 
 import { createClient } from '@supabase/supabase-js'
