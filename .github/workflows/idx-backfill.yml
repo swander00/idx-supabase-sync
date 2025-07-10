@@ -1,0 +1,42 @@
+# .github/workflows/idx-backfill.yml
+name: "IDX → Supabase Full Backfill"
+
+on:
+  workflow_dispatch:  # manual trigger only
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360    # allow up to 6 hours per batch
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - start_page: 1
+            end_page: 250
+          - start_page: 251
+            end_page: 500
+          - start_page: 501
+            end_page: 750
+          - start_page: 751
+            end_page: 1000
+          - start_page: 1001
+            end_page: 1250
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - name: Install dependencies
+        run: npm install
+      - name: Run backfill batch ${{ matrix.start_page }}–${{ matrix.end_page }}
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          IDX_API_URL: ${{ secrets.IDX_API_URL }}
+          IDX_API_KEY: ${{ secrets.IDX_API_KEY }}
+          FULL_BACKFILL: 'true'
+          START_PAGE: ${{ matrix.start_page }}
+          END_PAGE: ${{ matrix.end_page }}
+        run: npm run backfill

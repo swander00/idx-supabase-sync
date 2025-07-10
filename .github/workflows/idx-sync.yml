@@ -1,14 +1,16 @@
-name: IDX → Supabase Sync
+# .github/workflows/idx-sync.yml
+name: "IDX → Supabase Incremental Sync"
 
 on:
   schedule:
-    # runs at minute 0 of every hour
-    - cron: '0 * * * *'
-  workflow_dispatch:  # manual trigger
+    # runs every 2 hours at minute 0
+    - cron: '0 */2 * * *'
+  workflow_dispatch: {}
 
 jobs:
   sync:
     runs-on: ubuntu-latest
+    timeout-minutes: 30    # incremental runs finish quickly
     steps:
       - uses: actions/checkout@v3
       - name: Set up Node.js
